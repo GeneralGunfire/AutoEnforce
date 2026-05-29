@@ -9,8 +9,9 @@ import ScrollProgress    from '@/components/ScrollProgress'
 
 // Hosted video — works on Vercel (no file size limit issues)
 // Pexels free license, top-down highway aerial footage
-const HERO_VIDEO = 'https://videos.pexels.com/video-files/14114362/14114362-uhd_2160_2880_25fps.mp4'
-const HERO_POSTER = 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&q=80'
+// Using HD (720p) instead of UHD — dramatically reduces bandwidth & decode load on mobile
+const HERO_VIDEO = 'https://videos.pexels.com/video-files/14114362/14114362-hd_1920_2560_25fps.mp4'
+const HERO_POSTER = 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=75'
 
 export default function Home() {
   return (

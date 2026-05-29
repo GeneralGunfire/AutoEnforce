@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion'
 import Image from 'next/image'
 
@@ -10,36 +10,36 @@ const FEATURES = [
   {
     tag: 'AI Detection',
     headline: 'See every\nviolation\ninstantly.',
-    body: 'Our computer-vision stack processes 4K feeds at 60 fps, identifying plates, speed, and infraction type in under 80 ms.',
+    body: 'Computer vision identifies plates, speed, and infraction type in under 80 ms.',
     stat: '99.4%',
     statLabel: 'Detection accuracy',
     panels: [
-      { src: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=900&q=80', rotY: 12, rotX: -5, x: '-8%', y: '-14%', z: 1,    w: '62%', aspect: '16/10' },
-      { src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80', rotY: -6, rotX:  4, x: '28%', y: '22%',   z: 0.8,  w: '50%', aspect: '4/3'   },
+      { src: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=700&q=70', rotY: 12, rotX: -5, x: '-8%', y: '-14%', z: 1,    w: '62%', aspect: '16/10' },
+      { src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=70', rotY: -6, rotX:  4, x: '28%', y: '22%',   z: 0.8,  w: '50%', aspect: '4/3'   },
     ],
     flip: false,
   },
   {
     tag: 'Case Generation',
     headline: 'Court-ready\nin 2\nseconds.',
-    body: 'AutoEnforce ZA automatically compiles tamper-proof evidence packets — timestamped images, GPS metadata, and officer chain-of-custody.',
+    body: 'Tamper-proof evidence packets — timestamped images, GPS metadata, and chain-of-custody.',
     stat: '< 2s',
     statLabel: 'File generation time',
     panels: [
-      { src: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=900&q=80', rotY: -14, rotX: 6,  x: '12%', y: '-18%',  z: 1,    w: '60%', aspect: '16/10' },
-      { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80', rotY:  8,  rotX: -4, x: '-20%', y: '24%',  z: 0.75, w: '48%', aspect: '3/4'   },
+      { src: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=700&q=70', rotY: -14, rotX: 6,  x: '12%', y: '-18%',  z: 1,    w: '60%', aspect: '16/10' },
+      { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=700&q=70', rotY:  8,  rotX: -4, x: '-20%', y: '24%',  z: 0.75, w: '48%', aspect: '3/4'   },
     ],
     flip: true,
   },
   {
     tag: '24/7 Enforcement',
     headline: 'No shift\nends.\nEver.',
-    body: 'Cameras never sleep. Night-mode infrared, adverse-weather algorithms, and redundant uplinks keep every corridor covered around the clock.',
+    body: 'Night-mode infrared and adverse-weather algorithms keep every corridor covered.',
     stat: '24/7',
     statLabel: 'Continuous enforcement',
     panels: [
-      { src: 'https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=900&q=80', rotY: 16,  rotX: -6, x: '-12%', y: '-10%', z: 1,    w: '65%', aspect: '16/10' },
-      { src: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=900&q=80', rotY: -10, rotX:  5, x: '30%',  y: '28%',  z: 0.82, w: '46%', aspect: '1/1'   },
+      { src: 'https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=700&q=70', rotY: 16,  rotX: -6, x: '-12%', y: '-10%', z: 1,    w: '65%', aspect: '16/10' },
+      { src: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=700&q=70', rotY: -10, rotX:  5, x: '30%',  y: '28%',  z: 0.82, w: '46%', aspect: '1/1'   },
     ],
     flip: false,
   },
@@ -112,6 +112,14 @@ function PanelCluster({
 // ─── One feature row ──────────────────────────────────────────────────────────
 function FeatureRow({ feat, index }: { feat: typeof FEATURES[0]; index: number }) {
   const ref = useRef<HTMLDivElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check, { passive: true })
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
   const mxMV = useMotionValue(0)
   const myMV = useMotionValue(0)
   const smx  = useSpring(mxMV, { stiffness: 55, damping: 22 })
@@ -139,7 +147,7 @@ function FeatureRow({ feat, index }: { feat: typeof FEATURES[0]; index: number }
 
   const rafPending = useRef(false)
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (rafPending.current) return
+    if (isMobile || rafPending.current) return
     rafPending.current = true
     requestAnimationFrame(() => {
       const rect = ref.current?.getBoundingClientRect()
@@ -150,14 +158,14 @@ function FeatureRow({ feat, index }: { feat: typeof FEATURES[0]; index: number }
       rafPending.current = false
     })
   }
-  const handleMouseLeave = () => { mxMV.set(0); myMV.set(0) }
+  const handleMouseLeave = () => { if (!isMobile) { mxMV.set(0); myMV.set(0) } }
 
   const textCol = (
     <motion.div
       className='flex flex-col justify-center px-8 md:px-16'
       style={{ x: spTX, opacity: textOp }}
     >
-      {/* Tag with animated dot */}
+      {/* Tag — static dot, no infinite animation */}
       <motion.div
         className='flex items-center gap-2 mb-8'
         initial={{ opacity: 0 }}
@@ -165,12 +173,7 @@ function FeatureRow({ feat, index }: { feat: typeof FEATURES[0]; index: number }
         viewport={{ once: true }}
         transition={{ duration: 0.6, ease: E }}
       >
-        <motion.div
-          className='w-2 h-2 rounded-full'
-          style={{ background: 'rgba(232,224,208,0.5)' }}
-          animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-        />
+        <div className='w-2 h-2 rounded-full' style={{ background: 'rgba(232,224,208,0.5)' }} />
         <span className='text-[11px] tracking-[0.38em] uppercase font-mono'
           style={{ color: 'rgba(232,224,208,0.6)' }}>
           {feat.tag}

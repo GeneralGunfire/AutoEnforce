@@ -6,32 +6,18 @@ import Image from 'next/image'
 
 const E = [0.25, 0.46, 0.45, 0.94] as const
 
-// Pre-seeded positions so server and client render identically (no Math.random in render)
+// Reduced to 10 stars, opacity-only animation (no scale — fewer composite layers)
 const STARS = [
   { w: 1.8, h: 1.8, left: 12, top: 8,  dur: 3.2, delay: 0.4 },
   { w: 1.2, h: 1.2, left: 28, top: 22, dur: 5.1, delay: 1.1 },
-  { w: 2.1, h: 2.1, left: 44, top: 14, dur: 2.8, delay: 0.7 },
-  { w: 1.5, h: 1.5, left: 60, top: 35, dur: 4.4, delay: 2.0 },
-  { w: 1.0, h: 1.0, left: 75, top: 9,  dur: 3.7, delay: 0.2 },
-  { w: 2.4, h: 2.4, left: 88, top: 28, dur: 5.5, delay: 1.6 },
-  { w: 1.3, h: 1.3, left: 7,  top: 55, dur: 4.0, delay: 0.9 },
-  { w: 1.9, h: 1.9, left: 22, top: 70, dur: 2.6, delay: 2.3 },
-  { w: 1.1, h: 1.1, left: 38, top: 62, dur: 3.9, delay: 1.4 },
+  { w: 2.1, h: 2.1, left: 60, top: 14, dur: 4.2, delay: 0.7 },
+  { w: 1.5, h: 1.5, left: 75, top: 35, dur: 3.7, delay: 2.0 },
+  { w: 1.0, h: 1.0, left: 88, top: 9,  dur: 5.5, delay: 0.2 },
+  { w: 1.9, h: 1.9, left: 7,  top: 70, dur: 2.6, delay: 2.3 },
   { w: 2.2, h: 2.2, left: 53, top: 78, dur: 4.8, delay: 0.6 },
-  { w: 1.6, h: 1.6, left: 68, top: 55, dur: 3.3, delay: 2.8 },
-  { w: 1.0, h: 1.0, left: 82, top: 72, dur: 5.2, delay: 1.0 },
-  { w: 2.0, h: 2.0, left: 15, top: 88, dur: 2.9, delay: 1.7 },
-  { w: 1.4, h: 1.4, left: 33, top: 44, dur: 4.2, delay: 0.3 },
-  { w: 1.7, h: 1.7, left: 50, top: 50, dur: 3.6, delay: 2.5 },
-  { w: 1.2, h: 1.2, left: 65, top: 18, dur: 4.9, delay: 1.2 },
-  { w: 2.3, h: 2.3, left: 78, top: 42, dur: 3.1, delay: 0.8 },
-  { w: 1.5, h: 1.5, left: 91, top: 85, dur: 5.0, delay: 2.1 },
-  { w: 1.8, h: 1.8, left: 5,  top: 38, dur: 2.7, delay: 1.9 },
-  { w: 1.0, h: 1.0, left: 20, top: 95, dur: 4.5, delay: 0.5 },
-  { w: 2.0, h: 2.0, left: 42, top: 82, dur: 3.8, delay: 2.6 },
-  { w: 1.3, h: 1.3, left: 57, top: 92, dur: 5.3, delay: 1.3 },
-  { w: 1.6, h: 1.6, left: 72, top: 65, dur: 2.5, delay: 0.1 },
-  { w: 1.9, h: 1.9, left: 95, top: 48, dur: 4.1, delay: 2.2 },
+  { w: 1.6, h: 1.6, left: 22, top: 55, dur: 3.3, delay: 2.8 },
+  { w: 1.4, h: 1.4, left: 65, top: 44, dur: 4.2, delay: 0.3 },
+  { w: 1.7, h: 1.7, left: 90, top: 72, dur: 3.6, delay: 1.5 },
 ]
 
 export default function SceneClosing() {
@@ -81,7 +67,7 @@ export default function SceneClosing() {
               left: `${s.left}%`, top: `${s.top}%`,
               background: 'rgba(232,224,208,0.45)',
             }}
-            animate={{ opacity: [0.08, 0.55, 0.08], scale: [1, 1.5, 1] }}
+            animate={{ opacity: [0.08, 0.5, 0.08] }}
             transition={{ duration: s.dur, repeat: Infinity, delay: s.delay, ease: 'easeInOut' }}
           />
         ))}

@@ -31,7 +31,7 @@ function PanelShadow({ progress }: { progress: MotionValue<number> }) {
   const opacity = useTransform(progress, [0, 0.8, 1], [0.65, 0.3, 0])
   return (
     <motion.div
-      className='absolute -inset-8 -z-10 rounded-3xl blur-3xl bg-black'
+      className='absolute -inset-8 -z-10 rounded-3xl bg-black'
       style={{ opacity }}
     />
   )
@@ -115,15 +115,10 @@ function DateBadge({
     <motion.div style={{ x }} className='mb-4'>
       <span
         className='inline-flex items-center gap-2 border border-white/20 bg-white/5
-          backdrop-blur-sm px-3 py-1 rounded-full text-[11px] tracking-[0.25em]
+          px-3 py-1 rounded-full text-[11px] tracking-[0.25em]
           uppercase text-white/60 font-medium'
       >
-        <motion.span
-          animate={{ opacity: [1, 0.2, 1] }}
-          transition={{ duration: 1.4, repeat: Infinity }}
-          className='w-1.5 h-1.5 rounded-full'
-          style={{ background: accentColor }}
-        />
+        <span className='w-1.5 h-1.5 rounded-full' style={{ background: accentColor }} />
         {date}
       </span>
     </motion.div>
@@ -148,19 +143,15 @@ function ScrollCTA({
       <span className='text-white/35 text-xs tracking-[0.2em] uppercase font-light'>
         {scrollToExpand}
       </span>
-      <div className='flex flex-col items-center gap-0.5'>
-        {[0, 1, 2].map((i) => (
-          <motion.div
-            key={i}
-            animate={{ opacity: [0.15, 0.7, 0.15] }}
-            transition={{ duration: 1.4, delay: i * 0.18, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ color: accentColor }}
-            className='text-[10px] leading-none'
-          >
-            ▼
-          </motion.div>
-        ))}
-      </div>
+      {/* Single chevron — replaces 3 staggered infinite animations */}
+      <motion.div
+        animate={{ y: [0, 5, 0] }}
+        transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ color: accentColor }}
+        className='text-[14px] leading-none'
+      >
+        ▼
+      </motion.div>
     </motion.div>
   )
 }
@@ -219,7 +210,8 @@ export default function ScrollExpandMedia({
 }: ScrollExpandMediaProps) {
   const rawProgress = useRef(0)
   const mv          = useMotionValue(0)
-  const spring      = useSpring(mv, { stiffness: 60, damping: 18, mass: 0.6 })
+  // Stiffer spring = less GPU work per frame, still feels responsive
+  const spring      = useSpring(mv, { stiffness: 90, damping: 25, mass: 0.4 })
 
   const [showContent,        setShowContent]        = useState(false)
   const [mediaFullyExpanded, setMediaFullyExpanded] = useState(false)
@@ -359,18 +351,21 @@ export default function ScrollExpandMedia({
               <PanelWrapper progress={spring} isMobile={isMobile} reduced={reduced}>
                 <PanelShadow progress={spring} />
 
-                {mediaType === 'video' ? (
+                {mediaType === 'video' && !isMobile ? (
                   <video
                     src={mediaSrc}
                     poster={posterSrc}
-                    autoPlay muted loop playsInline preload='auto'
+                    autoPlay muted loop playsInline preload='metadata'
                     aria-hidden='true'
                     className='w-full h-full object-cover'
                     disablePictureInPicture
                     disableRemotePlayback
                   />
+                ) : mediaType === 'video' && isMobile ? (
+                  // On mobile: static poster image — avoids video decode overhead
+                  <Image src={posterSrc ?? mediaSrc} alt={title ?? 'Hero'} fill className='object-cover' sizes='100vw' priority />
                 ) : (
-                  <Image src={mediaSrc} alt={title ?? 'Media'} fill className='object-cover' sizes='100vw' />
+                  <Image src={mediaSrc} alt={title ?? 'Media'} fill className='object-cover' sizes='100vw' priority />
                 )}
 
                 <VideoOverlay progress={spring} />

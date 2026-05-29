@@ -89,7 +89,7 @@ export default function SceneMarquee() {
             <motion.div
               key={step.word}
               className='flex flex-col gap-3 p-8 group relative overflow-hidden'
-              style={{ background: 'rgba(8,8,8,0.5)', backdropFilter: 'blur(14px)' }}
+              style={{ background: 'rgba(12,12,14,0.92)' }}
               initial={{ opacity: 0, y: 32, rotateX: 12 }}
               whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
               viewport={{ once: true, margin: '-30px' }}
