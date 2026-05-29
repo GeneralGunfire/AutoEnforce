@@ -1,0 +1,68 @@
+'use client'
+
+import { motion } from 'framer-motion'
+
+const E = [0.25, 0.46, 0.45, 0.94] as const
+
+export default function HeroContent() {
+  return (
+    <div className='max-w-2xl mx-auto w-full text-center flex flex-col items-center gap-8 py-8'>
+
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: E }}
+        className='flex items-center gap-4'
+      >
+        <div className='w-8 h-px' style={{ background: 'rgba(232,224,208,0.25)' }} />
+        <span className='text-[11px] tracking-[0.35em] uppercase font-medium'
+          style={{ color: 'rgba(232,224,208,0.4)' }}>
+          AutoEnforce ZA
+        </span>
+        <div className='w-8 h-px' style={{ background: 'rgba(232,224,208,0.25)' }} />
+      </motion.div>
+
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.08, ease: E }}
+        className='font-brand font-bold text-white leading-[1.0] tracking-tight'
+        style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}
+      >
+        Redefining enforcement<br />
+        <span style={{ color: 'rgba(232,224,208,0.35)', fontWeight: 300 }}>across South Africa.</span>
+      </motion.h2>
+
+      <motion.p
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.18, ease: E }}
+        className='text-sm font-light leading-relaxed max-w-md'
+        style={{ color: 'rgba(232,224,208,0.4)' }}
+      >
+        AI-powered aerial surveillance that detects, records, and processes traffic violations in real time.
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3, ease: E }}
+        className='flex gap-4 items-center'
+      >
+        <button
+          className='font-brand font-semibold text-sm tracking-wide px-8 py-3.5 rounded-full transition-all duration-300'
+          style={{ background: 'rgba(232,224,208,0.95)', color: '#080808' }}
+        >
+          Request a Demo
+        </button>
+        <button
+          className='text-sm font-light tracking-wide transition-colors duration-200'
+          style={{ color: 'rgba(232,224,208,0.4)' }}
+        >
+          Scroll to explore ↓
+        </button>
+      </motion.div>
+
+    </div>
+  )
+}
