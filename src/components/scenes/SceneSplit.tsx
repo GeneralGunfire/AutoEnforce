@@ -55,22 +55,11 @@ function SinglePanel({
   mouseX: any
   mouseY: any
 }) {
-  // Entrance from below, staggered
-  const enterY = useTransform(progress, [0, 0.4], [80 + index * 28, 0])
-  const spY    = useSpring(enterY, { stiffness: 45, damping: 18 })
-  const op     = useTransform(progress, [0.04, 0.32], [0, 1])
-
-  // Exit — panel drifts back into depth as section leaves
-  const exitScale = useTransform(progress, [0.7, 1], [1, 0.94])
-
-  // Mouse tilt — far panels tilt more
-  const tx = useTransform(mouseX, [-1, 1], [-(p.z * 14), p.z * 14])
-  const ty = useTransform(mouseY, [-1, 1], [-(p.z * 10), p.z * 10])
-  const stx = useSpring(tx, { stiffness: 65, damping: 24 })
-  const sty = useSpring(ty, { stiffness: 65, damping: 24 })
-
-  // Idle float
-  const floatDelay = index * 1.4
+  // Use parent springs directly via useTransform — no per-panel springs
+  const enterY    = useTransform(progress, [0, 0.4], [70 + index * 24, 0])
+  const op        = useTransform(progress, [0.04, 0.32], [0, 1])
+  const exitScale = useTransform(progress, [0.7, 1], [1, 0.95])
+  const tx        = useTransform(mouseX, [-1, 1], [-(p.z * 12), p.z * 12])
 
   return (
     <motion.div
@@ -79,40 +68,26 @@ function SinglePanel({
         left: p.x, top: p.y,
         width: p.w, aspectRatio: p.aspect,
         rotateY: p.rotY, rotateX: p.rotX,
-        y: spY,
-        x: stx,
-        scale: exitScale,
-        opacity: op,
+        y: enterY, x: tx,
+        scale: exitScale, opacity: op,
+        willChange: 'transform, opacity',
       }}
     >
-      {/* Idle vertical float */}
-      <motion.div
-        className='w-full h-full'
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 5 + floatDelay, repeat: Infinity, ease: 'easeInOut', delay: floatDelay }}
-      >
-        <div className='relative w-full h-full rounded-xl overflow-hidden'
-          style={{
-            border: '1px solid rgba(232,224,208,0.11)',
-            boxShadow: `0 ${30 + index * 12}px ${80 + index * 20}px rgba(0,0,0,0.78)`,
-          }}>
-          <Image src={p.src} alt='' fill className='object-cover' sizes='500px' />
-
-          {/* Glare sweep */}
-          <motion.div
-            className='absolute inset-0 pointer-events-none'
-            animate={{ backgroundPosition: ['250% 0%', '-250% 0%'] }}
-            transition={{ duration: 7 + index * 2, repeat: Infinity, ease: 'linear', delay: index * 1.5 }}
-            style={{
-              background: 'linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.055) 50%, transparent 70%)',
-              backgroundSize: '350% 100%',
-            }}
-          />
-
-          <div className='absolute inset-0' style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 45%)' }} />
-          <div className='absolute inset-0' style={{ background: 'radial-gradient(ellipse at center, transparent 55%, rgba(8,8,8,0.3) 100%)' }} />
-        </div>
-      </motion.div>
+      <div className='relative w-full h-full rounded-xl overflow-hidden'
+        style={{
+          border: '1px solid rgba(232,224,208,0.11)',
+          boxShadow: `0 ${28 + index * 10}px ${70 + index * 16}px rgba(0,0,0,0.72)`,
+        }}>
+        <Image
+          src={p.src} alt='' fill
+          className='object-cover'
+          sizes='500px'
+          loading='lazy'
+        />
+        {/* Static glare — no animation, no GPU thrash */}
+        <div className='absolute inset-0' style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 45%)' }} />
+        <div className='absolute inset-0' style={{ background: 'radial-gradient(ellipse at center, transparent 55%, rgba(8,8,8,0.3) 100%)' }} />
+      </div>
     </motion.div>
   )
 }
@@ -162,10 +137,18 @@ function FeatureRow({ feat, index }: { feat: typeof FEATURES[0]; index: number }
   const statScale = useTransform(sp, [0.2, 0.5], [0.8, 1])
   const statOp    = useTransform(sp, [0.2, 0.45], [0, 1])
 
+  const rafPending = useRef(false)
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = ref.current!.getBoundingClientRect()
-    mxMV.set(((e.clientX - rect.left) / rect.width) * 2 - 1)
-    myMV.set(((e.clientY - rect.top)  / rect.height) * 2 - 1)
+    if (rafPending.current) return
+    rafPending.current = true
+    requestAnimationFrame(() => {
+      const rect = ref.current?.getBoundingClientRect()
+      if (rect) {
+        mxMV.set(((e.clientX - rect.left) / rect.width) * 2 - 1)
+        myMV.set(((e.clientY - rect.top)  / rect.height) * 2 - 1)
+      }
+      rafPending.current = false
+    })
   }
   const handleMouseLeave = () => { mxMV.set(0); myMV.set(0) }
 

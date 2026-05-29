@@ -41,7 +41,7 @@ function FloatingTag({ tag, mouseX, mouseY }: { tag: typeof TAGS[0]; mouseX: any
           background: 'rgba(8,8,8,0.85)',
           border: `1px solid ${STATUS_COLOR[tag.status]}`,
           color: STATUS_COLOR[tag.status],
-          backdropFilter: 'blur(8px)',
+          backdropFilter: 'none',
           boxShadow: tag.status === 'VIOLATION' ? `0 0 20px rgba(232,224,208,0.12)` : 'none',
         }}
       >
@@ -66,7 +66,7 @@ export default function SceneDetection() {
   const mouseY    = useMotionValue(0)
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const sp      = useSpring(scrollYProgress, { stiffness: 55, damping: 22 })
+  const sp      = useSpring(scrollYProgress, { stiffness: 38, damping: 20 })
   const opacity = useTransform(sp, [0, 0.15, 0.85, 1], [0, 1, 1, 0])
   const bgY     = useTransform(sp, [0, 1], ['4%', '-4%'])
   const panelY  = useTransform(sp, [0, 0.2, 0.8, 1], [60, 0, -10, -50])

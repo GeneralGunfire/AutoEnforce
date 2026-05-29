@@ -34,19 +34,25 @@ export default function GlobeCanvas() {
     if (!canvas) return
     const ctx = canvas.getContext('2d')!
 
+    // Cap DPR at 2 — no benefit beyond that, halves canvas pixels on retina
+    const DPR = Math.min(window.devicePixelRatio, 2)
     const resize = () => {
-      canvas.width  = canvas.offsetWidth  * window.devicePixelRatio
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
+      const w = canvas.offsetWidth
+      const h = canvas.offsetHeight
+      canvas.width  = w * DPR
+      canvas.height = h * DPR
+      // Reset transform then scale once — don't accumulate
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0)
     }
     resize()
     window.addEventListener('resize', resize)
 
     const draw = () => {
+      // Use CSS dimensions for drawing (ctx is already scaled)
       const W = canvas.offsetWidth
       const H = canvas.offsetHeight
       ctx.clearRect(0, 0, W, H)
-      rotY.current += 0.004
+      rotY.current += 0.003  // slightly slower — smoother feel
 
       const cx  = W / 2
       const cy  = H / 2

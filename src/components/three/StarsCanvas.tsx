@@ -12,15 +12,16 @@ export default function StarsCanvas() {
     const ctx = canvas.getContext('2d')!
 
     const resize = () => {
-      canvas.width  = canvas.offsetWidth  * window.devicePixelRatio
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
+      const DPR = Math.min(window.devicePixelRatio, 2)
+      canvas.width  = canvas.offsetWidth  * DPR
+      canvas.height = canvas.offsetHeight * DPR
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0)
     }
     resize()
     window.addEventListener('resize', resize)
 
     // Generate stars once
-    const stars = Array.from({ length: 220 }, () => ({
+    const stars = Array.from({ length: 140 }, () => ({
       x: Math.random(),
       y: Math.random(),
       r: 0.4 + Math.random() * 1.2,

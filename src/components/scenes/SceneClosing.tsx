@@ -37,33 +37,23 @@ const STARS = [
 export default function SceneClosing() {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const sp = useSpring(scrollYProgress, { stiffness: 50, damping: 20 })
+  // One spring for everything — no chained springs
+  const sp = useSpring(scrollYProgress, { stiffness: 35, damping: 22 })
 
-  // Background
-  const bgY     = useTransform(sp, [0, 1], ['0%', '-12%'])
-  const bgScale = useTransform(sp, [0, 0.5, 1], [1.12, 1.05, 1.0])
-
-  // Content
-  const opacity = useTransform(sp, [0, 0.14, 0.88, 1], [0, 1, 1, 0])
-  const y       = useTransform(sp, [0, 0.2, 0.8, 1], [60, 0, 0, -40])
-
-  // Headline split — words drift in from opposite sides
-  const h1X = useTransform(sp, [0, 0.35], [-50, 0])
-  const h2X = useTransform(sp, [0, 0.35], [50, 0])
-  const hOp = useTransform(sp, [0.06, 0.32], [0, 1])
-  const spH1 = useSpring(h1X, { stiffness: 45, damping: 18 })
-  const spH2 = useSpring(h2X, { stiffness: 45, damping: 18 })
-
-  // Lines flanking the pre-label grow outward
-  const lineW = useTransform(sp, [0.1, 0.4], ['0px', '48px'])
-
-  // CTA button — rises in from below
-  const ctaY  = useTransform(sp, [0.2, 0.5], [30, 0])
-  const ctaOp = useTransform(sp, [0.2, 0.48], [0, 1])
-  const spCY  = useSpring(ctaY, { stiffness: 50, damping: 18 })
-
-  // Stars drift gently upward on scroll
-  const starDrift = useTransform(sp, [0, 1], ['0%', '-6%'])
+  const bgY       = useTransform(sp, [0, 1], ['0%', '-10%'])
+  const bgScale   = useTransform(sp, [0, 0.5, 1], [1.1, 1.04, 1.0])
+  const opacity   = useTransform(sp, [0, 0.14, 0.88, 1], [0, 1, 1, 0])
+  const y         = useTransform(sp, [0, 0.2, 0.8, 1], [50, 0, 0, -30])
+  const h1X       = useTransform(sp, [0, 0.35], [-40, 0])
+  const h2X       = useTransform(sp, [0, 0.35], [40, 0])
+  const hOp       = useTransform(sp, [0.06, 0.32], [0, 1])
+  const spH1      = h1X   // drop secondary springs
+  const spH2      = h2X
+  const lineW     = useTransform(sp, [0.1, 0.4], ['0px', '48px'])
+  const ctaY      = useTransform(sp, [0.2, 0.5], [24, 0])
+  const ctaOp     = useTransform(sp, [0.2, 0.48], [0, 1])
+  const spCY      = ctaY
+  const starDrift = useTransform(sp, [0, 1], ['0%', '-5%'])
 
   return (
     <motion.section

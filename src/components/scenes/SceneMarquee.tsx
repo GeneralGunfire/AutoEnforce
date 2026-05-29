@@ -16,30 +16,21 @@ const STEPS = [
 export default function SceneMarquee() {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const sp = useSpring(scrollYProgress, { stiffness: 50, damping: 20 })
+  // One spring, no chaining
+  const sp = useSpring(scrollYProgress, { stiffness: 35, damping: 22 })
 
-  // Section fade
-  const opacity = useTransform(sp, [0, 0.1, 0.9, 1], [0, 1, 1, 0])
-  const scale   = useTransform(sp, [0, 0.18], [0.96, 1])
-
-  // BG parallax
-  const bgY     = useTransform(sp, [0, 1], ['0%', '-10%'])
-  const bgScale = useTransform(sp, [0, 1], [1.1, 1.0])
-
-  // Label rises in
-  const labelY  = useTransform(sp, [0, 0.25], [30, 0])
-  const labelOp = useTransform(sp, [0.05, 0.25], [0, 1])
-  const spLY    = useSpring(labelY, { stiffness: 50, damping: 18 })
-
-  // Cards — each one slides up from a slightly different depth
-  // Card grid gets a gentle rotateX tilt that flattens as you scroll in
-  const gridRotX = useTransform(sp, [0, 0.4], [8, 0])
-  const gridY    = useTransform(sp, [0, 0.35], [50, 0])
+  const opacity  = useTransform(sp, [0, 0.1, 0.9, 1], [0, 1, 1, 0])
+  const scale    = useTransform(sp, [0, 0.18], [0.97, 1])
+  const bgY      = useTransform(sp, [0, 1], ['0%', '-8%'])
+  const bgScale  = useTransform(sp, [0, 1], [1.08, 1.0])
+  const labelY   = useTransform(sp, [0, 0.25], [24, 0])
+  const labelOp  = useTransform(sp, [0.05, 0.25], [0, 1])
+  const spLY     = labelY  // drop secondary spring
+  const gridRotX = useTransform(sp, [0, 0.4], [6, 0])
+  const gridY    = useTransform(sp, [0, 0.35], [40, 0])
   const gridOp   = useTransform(sp, [0.08, 0.35], [0, 1])
-  const spGridY  = useSpring(gridY, { stiffness: 45, damping: 18 })
-
-  // Subtle light beam sweeping left-to-right
-  const beamX = useTransform(sp, [0.1, 0.8], ['-100%', '200%'])
+  const spGridY  = gridY   // drop secondary spring
+  const beamX    = useTransform(sp, [0.1, 0.8], ['-100%', '200%'])
 
   return (
     <motion.section
