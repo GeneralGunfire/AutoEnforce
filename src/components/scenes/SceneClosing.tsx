@@ -77,7 +77,7 @@ export default function SceneClosing() {
           src='https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=80'
           alt='' fill className='object-cover object-center' sizes='100vw' aria-hidden
         />
-        <div className='absolute inset-0' style={{ background: 'linear-gradient(180deg, #080808 0%, rgba(8,8,8,0.5) 50%, #080808 100%)' }} />
+        <div className='absolute inset-0' style={{ background: 'linear-gradient(180deg, rgba(8,8,8,0.7) 0%, rgba(8,8,8,0.38) 50%, rgba(8,8,8,0.7) 100%)' }} />
       </motion.div>
 
       {/* Stars */}

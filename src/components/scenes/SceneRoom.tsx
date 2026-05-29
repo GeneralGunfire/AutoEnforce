@@ -214,7 +214,7 @@ export default function SceneRoom() {
         <motion.div className='absolute inset-0 z-0 pointer-events-none'
           style={{ opacity: useTransform(sp, [0, 0.5, 1], [0.5, 1, 0.5]) }}
         >
-          <div style={{ position:'absolute', inset:0, background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(50,70,180,0.07) 0%, transparent 70%)' }} />
+          <div style={{ position:'absolute', inset:0, background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(232,224,208,0.04) 0%, transparent 70%)' }} />
         </motion.div>
 
         {/* Depth grid — scales toward viewer on scroll */}

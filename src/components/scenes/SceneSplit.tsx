@@ -110,7 +110,7 @@ function SinglePanel({
           />
 
           <div className='absolute inset-0' style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 45%)' }} />
-          <div className='absolute inset-0' style={{ background: 'radial-gradient(ellipse at center, transparent 45%, rgba(8,8,8,0.45) 100%)' }} />
+          <div className='absolute inset-0' style={{ background: 'radial-gradient(ellipse at center, transparent 55%, rgba(8,8,8,0.3) 100%)' }} />
         </div>
       </motion.div>
     </motion.div>
@@ -189,7 +189,7 @@ function FeatureRow({ feat, index }: { feat: typeof FEATURES[0]; index: number }
           transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
         />
         <span className='text-[11px] tracking-[0.38em] uppercase font-mono'
-          style={{ color: 'rgba(232,224,208,0.45)' }}>
+          style={{ color: 'rgba(232,224,208,0.6)' }}>
           {feat.tag}
         </span>
       </motion.div>
@@ -219,7 +219,7 @@ function FeatureRow({ feat, index }: { feat: typeof FEATURES[0]; index: number }
       {/* Body */}
       <motion.p
         className='text-sm font-light leading-relaxed max-w-sm mb-10'
-        style={{ color: 'rgba(232,224,208,0.48)' }}
+        style={{ color: 'rgba(232,224,208,0.62)' }}
         initial={{ opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -259,12 +259,19 @@ function FeatureRow({ feat, index }: { feat: typeof FEATURES[0]; index: number }
       style={{ opacity: sectionOp }}
       className='relative min-h-[100vh] grid grid-cols-1 md:grid-cols-2 overflow-hidden py-20'
     >
-      {/* Parallax background tint */}
+      {/* Parallax background — subtle image per row */}
       <motion.div
         className='absolute inset-0 pointer-events-none z-0'
-        style={{ y: bgY }}
+        style={{ y: bgY, scale: 1.06 }}
       >
-        <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 60% 70% at ${feat.flip ? '72%' : '28%'} 50%, rgba(40,55,130,0.07) 0%, transparent 65%)` }} />
+        <img
+          src={feat.panels[0].src}
+          alt=''
+          aria-hidden
+          className='absolute inset-0 w-full h-full object-cover opacity-[0.08]'
+          style={{ objectPosition: 'center' }}
+        />
+        <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 70% 80% at ${feat.flip ? '75%' : '25%'} 50%, rgba(232,224,208,0.04) 0%, transparent 65%)` }} />
       </motion.div>
 
       {/* Section number */}

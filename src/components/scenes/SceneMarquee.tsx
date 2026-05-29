@@ -53,7 +53,7 @@ export default function SceneMarquee() {
           src='https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=80'
           alt='' fill className='object-cover object-top' sizes='100vw' aria-hidden
         />
-        <div className='absolute inset-0' style={{ background: 'rgba(8,8,8,0.8)' }} />
+        <div className='absolute inset-0' style={{ background: 'rgba(8,8,8,0.62)' }} />
       </motion.div>
 
       {/* Light beam */}
@@ -98,7 +98,7 @@ export default function SceneMarquee() {
             <motion.div
               key={step.word}
               className='flex flex-col gap-3 p-8 group relative overflow-hidden'
-              style={{ background: 'rgba(8,8,8,0.72)', backdropFilter: 'blur(14px)' }}
+              style={{ background: 'rgba(8,8,8,0.5)', backdropFilter: 'blur(14px)' }}
               initial={{ opacity: 0, y: 32, rotateX: 12 }}
               whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
               viewport={{ once: true, margin: '-30px' }}
