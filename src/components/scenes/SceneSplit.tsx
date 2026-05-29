@@ -145,7 +145,7 @@ function FeatureRow({ feat, index }: { feat: typeof FEATURES[0]; index: number }
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const sp = useSpring(scrollYProgress, { stiffness: 48, damping: 20 })
 
-  const sectionOp = useTransform(sp, [0, 0.1, 0.9, 1], [0, 1, 1, 0])
+  const sectionOp = useTransform(sp, [0, 0.12, 1], [0, 1, 1])
 
   // Text: slides in from the opposite side to the panels
   const textX  = useTransform(sp, [0, 0.35], [feat.flip ? 70 : -70, 0])

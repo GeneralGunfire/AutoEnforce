@@ -7,16 +7,22 @@ import SceneClosing      from '@/components/scenes/SceneClosing'
 import BottomNav         from '@/components/BottomNav'
 import ScrollProgress    from '@/components/ScrollProgress'
 
+// Hosted video — works on Vercel (no file size limit issues)
+// Pexels free license, top-down highway aerial footage
+const HERO_VIDEO = 'https://videos.pexels.com/video-files/14114362/14114362-uhd_2160_2880_25fps.mp4'
+const HERO_POSTER = 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&q=80'
+
 export default function Home() {
   return (
     <main style={{ background: '#080808' }}>
       <ScrollProgress />
 
-      {/* ── Hero: scroll-expand video (keep as-is) ── */}
+      {/* ── 1. Hero: scroll-expand aerial highway video ── */}
       <ScrollExpandMedia
         mediaType='video'
-        mediaSrc='/video/clip1.mp4'
-        bgImageSrc='https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&q=80'
+        mediaSrc={HERO_VIDEO}
+        posterSrc={HERO_POSTER}
+        bgImageSrc={HERO_POSTER}
         title='AutoEnforce ZA'
         scrollToExpand='Scroll to expand'
         accentColor='rgba(232,224,208,0.9)'
@@ -24,16 +30,16 @@ export default function Home() {
         <HeroContent />
       </ScrollExpandMedia>
 
-      {/* ── Scene 1: 3D room — panels floating in perspective ── */}
+      {/* ── 2. Coverage: floating 3D panels of camera feeds ── */}
       <SceneRoom />
 
-      {/* ── Scene 2: Split feature rows — left/right alternating ── */}
+      {/* ── 3. Features: 3 alternating split rows with depth ── */}
       <SceneSplit />
 
-      {/* ── Scene 3: Process steps ── */}
+      {/* ── 4. Process: 4-step cards ── */}
       <SceneMarquee />
 
-      {/* ── Scene 5: Closing CTA ── */}
+      {/* ── 5. Closing CTA ── */}
       <SceneClosing />
 
       <BottomNav />

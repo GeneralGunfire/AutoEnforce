@@ -171,7 +171,7 @@ export default function SceneRoom() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const sp = useSpring(scrollYProgress, { stiffness: 38, damping: 18 })
 
-  const opacity = useTransform(sp, [0, 0.08, 0.88, 1], [0, 1, 1, 0])
+  const opacity = useTransform(sp, [0, 0.1, 1], [0, 1, 1])
 
   // Camera Z — drives all panel depth movement
   const cameraZ = useTransform(sp, [0, 1], [0, 1])
